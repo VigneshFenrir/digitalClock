@@ -7,41 +7,92 @@
   </head>
   <body>
     <div class="container">
-      <div class="clock">
+      <div class="watch">
         <span id="hrs">00</span>
         <span>:</span>
         <span id="mins">00</span>
         <span>:</span>
         <span id="sec">00</span>
-        <span id="am-pm">am</span>
+        <span>:</span>
+        <span id="tens">00</span>
+      </div>
+      <div class="btn">
+        <button id="start">start</button>
+        <button id="stop">stop</button>
+        <button id="reset">reset</button>
       </div>
     </div>
 
     <script>
-      let ampm = document.getElementById("am-pm");
-      let hours = document.getElementById("hrs");
-      let minutes = document.getElementById("mins");
-      let seconds = document.getElementById("sec");
+      window.onload = function () {
+        let hours = 0;
+        let minutes = 0;
+        let seconds = 0;
+        let tens = 0;
+        let appendhours = document.querySelector("#hrs");
+        let appendminutes = document.querySelector("#mins");
+        let appendseconds = document.querySelector("#sec");
+        let appendtens = document.querySelector("#tens");
+        let startBtn = document.querySelector("#start");
+        let stopBtn = document.querySelector("#stop");
+        let resetBtn = document.querySelector("#reset");
+        let Interval;
 
-      function padzero(num) {
-        return num < 10 ? "0" + num : num;
-      }
+        startBtn.onclick = () => {
+          // console.log("hi");
+          clearInterval(Interval);
+          Interval = setInterval(startTimer, 10);
+        };
+        stopBtn.onclick = () => {
+          clearInterval(Interval);
+        };
+        resetBtn.onclick = () => {
+          clearInterval(Interval);
+          let hours = "00";
+          let minutes = "00";
+          let seconds = "00";
+          let tens = "00";
+          appendhours.innerHTML = hours;
+          appendminutes.innerHTML = minutes;
+          appendseconds.innerHTML = seconds;
+          appendtens.innerHTML = tens;
+        };
 
-      function displayTime() {
-        let dateTime = new Date();
-        let hour = dateTime.getHours();
-        let minute = padzero(dateTime.getMinutes());
-        let second = padzero(dateTime.getSeconds());
-        if (hour > 12) {
-          hour = hour - 12;
-          ampm.innerHTML = "pm";
-        }
-        hours.innerHTML = padzero(hour);
-        minutes.innerHTML = minute;
-        seconds.innerHTML = second;
-      }
-
-      setInterval(displayTime, 100);
+        const startTimer = () => {
+          tens++;
+          // console.log("tens", tens);
+          if (tens < 9) {
+            appendtens.innerHTML = "0" + tens;
+          }
+          if (tens > 9) {
+            appendtens.innerHTML = tens;
+          }
+          if (tens > 99) {
+            seconds++;
+            appendseconds.innerHTML = "0" + seconds;
+            tens = 0;
+            appendtens.innerHTML = "0" + 0;
+          }
+          if (seconds > 9) {
+            appendseconds.innerHTML = seconds;
+          }
+          if (seconds > 59) {
+            minutes++;
+            appendminutes.innerHTML = "0" + minutes;
+            seconds = 0;
+            appendseconds.innerHTML = "0" + 0;
+          }
+          if (minutes > 9) {
+            appendminutes.innerHTML = minutes;
+          }
+          if (minutes > 59) {
+            hour++;
+            appendhours.innerHTML = "0" + hours;
+            minutes = 0;
+            appendminutes.innerHTML = "0" + 0;
+          }
+        };
+      };
     </script>
   </body>
 </html>
